@@ -13,7 +13,6 @@
           <th></th>
         </tr>
       </thead>
-
       <tbody>
         <% @users.each do |user| %>
           <tr>
@@ -21,7 +20,11 @@
             <td><%= user.name %></td>
             <td><%= user.cid %></td>
             <td><%= user.phone %></td>
-            <td><%= link_to 'Destroy', user_registration_path(user), method: :delete, data: { confirm: 'Are you sure?' },class:"btn btn-danger btn-sm text-white" %></td>
+            <td>
+              <% if policy(user).destroy? %>
+                <%= link_to 'Destroy', user_registration_path(user), method: :delete, data: { confirm: 'Are you sure?' },class:"btn btn-danger btn-sm text-white" %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

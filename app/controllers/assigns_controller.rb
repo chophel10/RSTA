@@ -2,22 +2,23 @@ class AssignsController < ApplicationController
   before_action :set_assign, only: %i[ show edit update destroy ]
 
   # GET /assigns or /assigns.json
-  def index
-    @assigns = Assign.all
-    @complains = Complain.all
-  end
+  # def index
+  #   @assigns = Assign.all
+  #   @complains = Complain.all
+  # end
 
   # GET /assigns/new
-  def new
-    @assign = Assign.new
-  end
+  # def new
+  #   @assign = Assign.new
+  # end
 
   # GET /assigns/1/edit
-  def edit
-  end
+  # def edit
+  # end
 
   # POST /assigns or /assigns.json
   def create
+    authorize Assign
     @assign = Assign.new(assign_params)
 
     respond_to do |format|
@@ -33,26 +34,26 @@ class AssignsController < ApplicationController
   end
 
   # PATCH/PUT /assigns/1 or /assigns/1.json
-  def update
-    respond_to do |format|
-      if @assign.update(assign_params)
-        format.html { redirect_to @assign, notice: "Assign was successfully updated." }
-        format.json { render :show, status: :ok, location: @assign }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @assign.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # def update
+  #   respond_to do |format|
+  #     if @assign.update(assign_params)
+  #       format.html { redirect_to @assign, notice: "Assign was successfully updated." }
+  #       format.json { render :show, status: :ok, location: @assign }
+  #     else
+  #       format.html { render :edit, status: :unprocessable_entity }
+  #       format.json { render json: @assign.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
-  # DELETE /assigns/1 or /assigns/1.json
-  def destroy
-    @assign.destroy
-    respond_to do |format|
-      format.html { redirect_to assigns_url, notice: "Assign was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+  # # DELETE /assigns/1 or /assigns/1.json
+  # def destroy
+  #   @assign.destroy
+  #   respond_to do |format|
+  #     format.html { redirect_to assigns_url, notice: "Assign was successfully destroyed." }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
 

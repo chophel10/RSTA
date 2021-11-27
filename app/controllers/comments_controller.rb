@@ -5,6 +5,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
+    authorize Comment
     @comment = @complain.comments.create(params[:comment].permit(:content))
     @comment.user_id = current_user.id
     @comment.save
@@ -51,20 +52,21 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    authorize @comment
     @comment.destroy
     redirect_to complain_path(@complain)
   end
 
-  def edit
-  end
+  # def edit
+  # end
 
-  def update
-    if @comment.update(params[:comment].permit(:content))
-      redirect_to complain_path(@complain)
-    else
-      render "edit"
-    end
-  end
+  # def update
+  #   if @comment.update(params[:comment].permit(:content))
+  #     redirect_to complain_path(@complain)
+  #   else
+  #     render "edit"
+  #   end
+  # end
 
   private
 

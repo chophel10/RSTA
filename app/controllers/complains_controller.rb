@@ -1,20 +1,24 @@
 class ComplainsController < ApplicationController
   before_action :set_complain, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /complains or /complains.json
   def index
+    authorize Complain
     @complains = Complain.all
     @users = User.all
   end
 
   # GET /complains/1 or /complains/1.json
   def show
+    authorize Complain
     @comments = Comment.where(complain_id: @complain).order("created_at DESC")
   end
 
   # GET /complains/new
   def new
     @complain = Complain.new
+    authorize @complain
   end
 
   # GET /complains/1/edit
@@ -23,6 +27,7 @@ class ComplainsController < ApplicationController
 
   # POST /complains or /complains.json
   def create
+    authorize Complain
     @complain = Complain.new(complain_params)
     @complain.user_id = current_user.id
 
@@ -39,6 +44,7 @@ class ComplainsController < ApplicationController
 
   # PATCH/PUT /complains/1 or /complains/1.json
   def update
+    authorize @complain
     respond_to do |format|
       if @complain.update(complain_params)
         format.html { redirect_to @complain, notice: "Complain was successfully updated." }
@@ -52,6 +58,7 @@ class ComplainsController < ApplicationController
 
   # DELETE /complains/1 or /complains/1.json
   def destroy
+    authorize @complain
     @complain.destroy
     respond_to do |format|
       format.html { redirect_to complains_url, notice: "Complain was successfully destroyed." }

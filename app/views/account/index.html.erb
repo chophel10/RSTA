@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-header text-center">
+    <h4>User Account</h4>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Email</th>
+          <th>Name</th>
+          <th>CID</th>
+          <th>Phone</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.email %></td>
+            <td><%= user.name %></td>
+            <td><%= user.cid %></td>
+            <td><%= user.phone %></td>
+            <td><%= link_to 'Destroy', user_registration_path(user), method: :delete, data: { confirm: 'Are you sure?' },class:"btn btn-danger btn-sm text-white" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-header text-center">
+  <h5>Comment</h5>
+  </div><br>
+  
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <% @comments.each do |comment| %>
+            <p><b>Name: <%= comment.user.name %></b></p>
+            <p><b>Complain: </b><%= comment.content %></p>
+            <% if current_user == comment.user %>
+                <%= link_to "edit comment", edit_complain_comment_path(comment.complain, comment), class:"btn btn-sm btn-warning" %>
+                <%= link_to "Delete Comment", [comment.complain, comment], method: :delete, class:"btn btn-danger btn-sm text-white" %>
+            <% end %><hr>
+        <% end %>
+        <%= render "comments/form" %>
+    <div class="col-lg-2"></div>
+  </div>
+  <br>
+  
+</div>
+

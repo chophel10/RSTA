@@ -1,0 +1,4 @@
+<%= form_for([@complain, @complain.comments.build]) do |f| %>
+    <%= f.text_area :content, class:"form-control", placeholder:"Comment here." %><br>
+    <%= f.submit class:"btn btn-sm btn-primary" %>
+<% end %>

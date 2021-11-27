@@ -1,0 +1,91 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="text-center">Complains</h4>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Content</th>
+          <th>Location</th>
+          <th>Image</th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Resolve</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @complains.each do |complain| %>
+          <tr>
+            <td><%= link_to complain.title , complain%></td>
+            <td><%= complain.content %></td>
+            <td><%= complain.location %></td>
+            <td><% if complain.image.attached? %>
+              <%= image_tag complain.image, style: "width:150px;" %>
+            <% end %></td>
+            <td><%= complain.start_date %></td>
+            <td><%= complain.end_date %></td>
+            <td><%= complain.resolve %></td>
+            
+            <td><%= link_to 'Edit', edit_complain_path(complain), class:"btn btn-sm btn-warning text-white" %></td>
+            <td><%= link_to 'Destroy', complain, method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger btn-sm text-white" %></td>
+            <td>
+              <button  class="btn btn-success btn-sm" data-complain="<%= complain.id %>" data-bs-toggle="modal" data-bs-target="#assignModal">Assign</button>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to 'New Complain', new_complain_path, class:"btn btn-primary btn-sm text-white" %>
+  </div>
+</div>
+
+<br>
+
+<!-- Modal -->
+<div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assignModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: assigns_path do |form| %>
+          
+          <div class="field">
+            <%= form.label :user_id %>
+            <select name="assign[user_id]">
+              <%= @users.each do |user| %>
+              <option value="<%= user.id %>"><%= user.email %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="field">
+            <input id="complain_id" type="hidden" name="assign[complain_id]" value="">
+          </div>
+
+          <div class="actions">
+            <%= form.submit "Assign", class: "btn btn-sm btn-success" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready( () => {
+  $('#assignModal').on('show.bs.modal', (e) => {
+
+    var complain_id = $(e.relatedTarget).data('complain');   
+    $('#complain_id').val(complain_id);
+
+  });
+});
+</script>

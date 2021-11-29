@@ -28,14 +28,18 @@
             <td><%= complain.start_date %></td>
             <td><%= complain.end_date %></td>
             <td><%= complain.resolve %></td>
-            <td><% if policy(Complain).update? %>
-                <%= link_to 'Edit', edit_complain_path(complain), class:"btn btn-sm btn-warning text-white" %></td>
+            <td>
+              <% if complain.assign != :null %>
+                <% if current_user.is_customercare  || complain.user_id == current_user.id  %>
+                  <%= link_to 'Edit', edit_complain_path(complain), class:"btn btn-sm btn-warning text-white" %></td>
+              <% end %>
             <% end %>
-            <td><% if policy(Complain).destroy? %>
+            <td>
+              <% if complain.user_id == current_user.id %>
                 <%= link_to 'Destroy', complain, method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger btn-sm text-white" %></td>
             <% end %>
             <td>
-              <% if  policy(Assign).update?%>
+              <% if current_user.is_admin %>
                 <button  class="btn btn-success btn-sm" data-complain="<%= complain.id %>" data-bs-toggle="modal" data-bs-target="#assignModal">Assign</button>
               <% end %>
             </td>
@@ -43,7 +47,7 @@
         <% end %>
       </tbody>
     </table>
-    <% if policy(Complain).create? %>
+    <% if current_user.is_complainer %>
       <%= link_to 'New Complain', new_complain_path, class:"btn btn-primary btn-sm text-white" %>
     <% end %>
   </div>
@@ -63,7 +67,7 @@
             <%= form.label :user_id %>
             <select name="assign[user_id]">
               <%= @users.each do |user| %>
-                <% if user.customer_care %>
+                <% if user.is_customercare %>
                   <option value="<%= user.id %>"><%= user.email %></option>
                 <% end %>
               <% end %>

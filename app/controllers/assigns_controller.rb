@@ -2,10 +2,14 @@ class AssignsController < ApplicationController
   before_action :set_assign, only: %i[ show edit update destroy ]
 
   # GET /assigns or /assigns.json
-  # def index
-  #   @assigns = Assign.all
-  #   @complains = Complain.all
-  # end
+  def index
+    if current_user.is_customercare
+      @assigns = Assign.all
+      @complains = Complain.all
+    else
+      redirect_to root_path, notice:"Not Authorized."
+    end
+  end
 
   # GET /assigns/new
   # def new
@@ -18,18 +22,21 @@ class AssignsController < ApplicationController
 
   # POST /assigns or /assigns.json
   def create
-    authorize Assign
-    @assign = Assign.new(assign_params)
-
-    respond_to do |format|
-      if @assign.save
-        ComplainMailer.with(email: @assign.user.email).assign.deliver
-        format.html { redirect_to @assign, notice: "Assign was successfully created." }
-        format.json { render :show, status: :created, location: @assign }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @assign.errors, status: :unprocessable_entity }
+    if current_user.is_admin
+      @assign = Assign.new(assign_params)
+  
+      respond_to do |format|
+        if @assign.save
+          ComplainMailer.with(email: @assign.user.email).assign.deliver
+          format.html { redirect_to @assign, notice: "Assign was successfully created." }
+          format.json { render :show, status: :created, location: @assign }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @assign.errors, status: :unprocessable_entity }
+        end
       end
+      else
+        redirect_to root_path, notice: "Not authorized"
     end
   end
 

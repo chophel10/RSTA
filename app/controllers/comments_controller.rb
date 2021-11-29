@@ -5,12 +5,11 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    authorize Comment
     @comment = @complain.comments.create(params[:comment].permit(:content))
     @comment.user_id = current_user.id
     @comment.save
     
-    
+  
     if @comment.save
       
       @commentArray = []
@@ -52,7 +51,6 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    authorize @comment
     @comment.destroy
     redirect_to complain_path(@complain)
   end

@@ -1,5 +1,29 @@
-<h1>New Complain</h1>
-
-<%= render 'form', complain: @complain %>
-
+<div class="card">
+  <div class="card-header">
+    <h4 class="text-center">New Complains</h4>
+  </div>
+  <div class="card-body">
+    <%= form_with url: complains_path do |form| %>
+      <div class="field form-group">
+        <%= form.label :Title %>
+        <%= form.text_field :"complain[title]", class:"form-control"%>
+      </div>
+      <div class="field form-group">
+        <%= form.label :Description %>
+        <%= form.text_area :"complain[content]", class:"form-control"%>
+      </div>
+      <div class="field form-group">
+        <%= form.label :Location %>
+        <%= form.text_field :"complain[location]", class:"form-control"%>
+      </div>
+      <div class="field form-group">
+        <%= form.label :image %>
+        <%= form.file_field :"complain[image]", class:"form-control" %>
+      </div>
+      <div class="actions">
+        <%= form.submit class:"btn btn-sm btn-primary"%>
+      </div>
+    <% end %>
+  </div>
+</div>
 <%= link_to 'Back', complains_path %>

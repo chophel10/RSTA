@@ -1,31 +1,23 @@
 <%= form_with(model: complain) do |form| %>
-  <% if complain.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(complain.errors.count, "error") %> prohibited this complain from being saved:</h2>
-      <ul>
-        <% complain.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <% if current_user.is_complainer %>
+    <div class="field form-group">
+      <%= form.label :Title %>
+      <%= form.text_field :title, class:"form-control"%>
+    </div>
+    <div class="field form-group">
+      <%= form.label :Description %>
+      <%= form.text_area :content, class:"form-control"%>
+    </div>
+    <div class="field form-group">
+      <%= form.label :Location %>
+      <%= form.text_field :location, class:"form-control"%>
+    </div>
+    <div class="field form-group">
+      <%= form.label :image %>
+      <%= form.file_field :image, class:"form-control" %>
     </div>
   <% end %>
-  <div class="field form-group">
-    <%= form.label :Title %>
-    <%= form.text_field :title, class:"form-control"%>
-  </div>
-  <div class="field form-group">
-    <%= form.label :Description %>
-    <%= form.text_area :content, class:"form-control"%>
-  </div>
-  <div class="field form-group">
-    <%= form.label :Location %>
-    <%= form.text_field :location, class:"form-control"%>
-  </div>
-  <div class="field form-group">
-    <%= form.label :image %>
-    <%= form.file_field :image, class:"form-control" %>
-  </div>
-  <% if policy(complain).update? %>
+  <% if current_user.is_customercare %>
     <div class="field form-group">
       <%= form.label :start_date %>
       <%= form.date_select :start_date, class:"form-control"%>

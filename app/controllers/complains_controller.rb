@@ -6,7 +6,9 @@ class ComplainsController < ApplicationController
   def index
     @complains = Complain.all
     @users = User.all
-
+    @assigns = Assign.all
+    @complain_present = false
+  
   end
 
   # GET /complains/1 or /complains/1.json
@@ -17,6 +19,7 @@ class ComplainsController < ApplicationController
   # GET /complains/new
   def new
   end
+  
 
   # GET /complains/1/edit
   def edit

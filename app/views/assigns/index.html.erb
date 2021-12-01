@@ -1,37 +1,47 @@
 <div class="card">
-<div class="card-header text-center">
-  <h4>Complains</h4>
+  <div class="card-header text-center">
+    <h4>Complains</h4>
   </div>
   <div class="card-body">
-      <table class="table table-striped table-hover table-bordered">
-        <thead class="table-dark">
-          <th>Title</th>
-          <th>Content</th>
-          <th>Image</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Resolve</th>
-          <th colspan="2"></th>
-        </tr>
-      </thead>
-
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <th>Title</th>
+        <th>Content</th>
+        <th>Image</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
     <tbody>
       <% @assigns.each do |assign| %>
         <% if assign.user_id == current_user.id %>
           <% @complains.each do |complain| %>
             <% if complain.id == assign.complain_id %>
-            <tr>
-              <td><%= link_to complain.title, complain %></td>
-              <td><%= complain.content %></td>
-              <td><% if complain.image.attached? %>
-                <%= image_tag complain.image, style: "width:150px;" %>
-              <% end %></td>
-              <td><%= complain.start_date %></td>
-              <td><%= complain.end_date %></td>
-              <td><%= complain.resolve %></td>
-              <td><%= link_to "Edit", edit_complain_path(complain), class:"btn btn-warning btn-sm text-white" %></td>
-              <td><%= link_to "Destroy", complain, method: :delete, data: { confirm: "Are you sure?" }, class:"btn btn-danger btn-sm text-white" %></td>
-            </tr>
+              <tr>
+                <td><%= link_to complain.title, complain %></td>
+                <td><%= complain.content %></td>
+                <td><% if complain.image.attached? %>
+                    <%= image_tag complain.image, style: "width:150px;" %>
+                  <% end %></td>
+                <td><%= complain.start_date %></td>
+                <td><%= complain.end_date %></td>
+                <td>
+                  <% if complain.resolve == true %>
+                    Resolved
+                  <% else %>
+                    <% if complain.start_date == nil &&complain.end_date == nil %>
+                      Not started.
+                    <% elsif complain.end_date > Time.now %>
+                      In process
+                    <% else %>
+                      Not Resolved
+                    <% end %>
+                  <% end %>
+                </td>
+                <td><%= link_to "Edit", edit_complain_path(complain), class:"btn btn-warning btn-sm text-white" %></td>
+              </tr>
             <% end %>
           <% end %>
         <% end %>
@@ -41,5 +51,3 @@
 </div>
 </div>
 <br>
-
-<%= link_to "New Assign", new_assign_path %>

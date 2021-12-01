@@ -8,7 +8,6 @@ class CommentsController < ApplicationController
     @comment = @complain.comments.create(params[:comment].permit(:content))
     @comment.user_id = current_user.id
     @comment.save
-    
   
     if @comment.save
       
@@ -40,8 +39,8 @@ class CommentsController < ApplicationController
       end
       
       #Sending mail
-      @commentArray.each do |comment|
-        ComplainMailer.with(email: comment).comment.deliver
+      @commentArray.each do |email|
+        ComplainMailer.with(email: email, complain: @complain).comment.deliver
       end
 
       redirect_to complain_path(@complain)
